@@ -15,6 +15,7 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["JujuPower"] = "Pouvoir de Juju"
 	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Jambières du Gardien des nuages"
 	LOCALIZATION_KURI_DPS["HeavenBlessing"] = "Bénédiction céleste"
+	LOCALIZATION_KURI_DPS["Overpower"] = "Fulgurance"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -27,6 +28,7 @@ else
 	LOCALIZATION_KURI_DPS["JujuPower"] = "Juju Power"
 	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Cloudkeeper Legplates"
 	LOCALIZATION_KURI_DPS["HeavenBlessing"] = "Heaven\'s Blessing"
+	LOCALIZATION_KURI_DPS["Overpower"] = "Overpower"
 end
 
 
@@ -92,13 +94,21 @@ function kuri_fury_dual_strike()
 	end
 
 	kuri_fury_buff()
-	
-	castAttack()
-	
+
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
 		swapChargeAndIntercept()
 	end
+
+	-- If we are not in zerk stance, and overpower is not available
+	-- we have no reason to not be in zerk stance!
+	if     not isBerserkerStance()
+	   and     Zorlen_isActionInRangeBySpellName(LOCALIZATION_KURI_DPS.Overpower)
+	then
+		castBerserkerStance()
+	end
+
+	castAttack()
 
 	-- We want max sunder armor for maximum DPS ASAP
 	if UnitInRaid("player") then
@@ -118,6 +128,16 @@ function kuri_fury_dual_strike()
 
 	-- Use Bloodthirst as main skill
 	castBloodthirst()
+	
+	-- If we get here, we have less than 30 rage, or Bloodthirst is in CD.
+	-- If we have 25 rage of less, we can change stance without loosing rage.
+	-- If overpower is available, let's use it!
+	if     UnitMana("player") <= 25
+	   and Zorlen_isActionInRangeBySpellName(LOCALIZATION_KURI_DPS.Overpower)
+	then
+		castBattleStance()
+		castOverpower()
+	end
 
 	-- Use execute if target's HP below 20%
 	if Zorlen_TargetIsDieingEnemy() then
