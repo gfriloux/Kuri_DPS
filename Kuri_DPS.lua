@@ -10,6 +10,9 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["MightyRage"] = "Rage puissante"
 	LOCALIZATION_KURI_DPS["MightyRagePotion"] = "Potion de rage puissante"
 	LOCALIZATION_KURI_DPS["Flurry"] = "Rafale"
+	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir des géants"
+	LOCALIZATION_KURI_DPS["ElixirMongoose"] = "Elixir de la Mangouste"
+	LOCALIZATION_KURI_DPS["JujuPower"] = "Pouvoir de Juju"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -17,6 +20,9 @@ else
 	LOCALIZATION_KURI_DPS["MightyRage"] = "Mighty Rage"
 	LOCALIZATION_KURI_DPS["MightyRagePotion"] = "Mighty Rage Potion"
 	LOCALIZATION_KURI_DPS["Flurry"] = "Flurry"
+	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir of Giants"
+	LOCALIZATION_KURI_DPS["ElixirMongoose"] = "Elixir of the Mongoose"
+	LOCALIZATION_KURI_DPS["JujuPower"] = "Juju Power"
 end
 
 
@@ -34,6 +40,22 @@ function kuri_fury_buff()
 	-- We need Battle Shout to always be up
 	if not isBattleShoutActive() then
 		castBattleShout()
+	end
+
+	-- If we are in a raid, we use consumables.
+	-- Let's manage the most basic ones.
+	if UnitInRaid("player") then
+		if not Zorlen_checkBuffByName[(LOCALIZATION_KURI_DPS.ElixirGiants, "player") then
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.ElixirGiants)
+		end
+		
+		if not Zorlen_checkBuffByName[(LOCALIZATION_KURI_DPS.ElixirMongoose, "player") then
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.ElixirMongoose)
+		end
+
+		if not Zorlen_checkBuffByName[(LOCALIZATION_KURI_DPS.JujuPower, "player") then
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.JujuPower)
+		end
 	end
 
 	-- If Primal Blessing procs, we want to burst our PA
