@@ -78,7 +78,6 @@ end
 function kuri_fury_dual_strike()
 	-- We do not touch CC targets
 	if Zorlen_isNoDamageCC("target") then
-		-- print('We dont touch CC targets')
 		return true
 	end
 
