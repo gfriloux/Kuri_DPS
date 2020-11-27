@@ -1,0 +1,7 @@
+## Interface: 80200
+## Title: Kuri DPS
+## Author: Kuri
+## Version: 0.1
+## Dependencies: Zorlen
+
+Kuri_DPS.lua
