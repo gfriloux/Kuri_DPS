@@ -13,6 +13,8 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir des géants"
 	LOCALIZATION_KURI_DPS["ElixirMongoose"] = "Elixir de la Mangouste"
 	LOCALIZATION_KURI_DPS["JujuPower"] = "Pouvoir de Juju"
+	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Jambières du Gardien des nuages"
+	LOCALIZATION_KURI_DPS["HeavenBlessing"] = "Bénédiction céleste"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -23,6 +25,8 @@ else
 	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir of Giants"
 	LOCALIZATION_KURI_DPS["ElixirMongoose"] = "Elixir of the Mongoose"
 	LOCALIZATION_KURI_DPS["JujuPower"] = "Juju Power"
+	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Cloudkeeper Legplates"
+	LOCALIZATION_KURI_DPS["HeavenBlessing"] = "Heaven\'s Blessing"
 end
 
 
@@ -45,15 +49,15 @@ function kuri_fury_buff()
 	-- If we are in a raid, we use consumables.
 	-- Let's manage the most basic ones.
 	if UnitInRaid("player") then
-		if not Zorlen_checkBuffByName[(LOCALIZATION_KURI_DPS.ElixirGiants, "player") then
+		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.ElixirGiants, "player") then
 			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.ElixirGiants)
 		end
 		
-		if not Zorlen_checkBuffByName[(LOCALIZATION_KURI_DPS.ElixirMongoose, "player") then
+		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.ElixirMongoose, "player") then
 			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.ElixirMongoose)
 		end
 
-		if not Zorlen_checkBuffByName[(LOCALIZATION_KURI_DPS.JujuPower, "player") then
+		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.JujuPower, "player") then
 			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.JujuPower)
 		end
 	end
@@ -64,6 +68,11 @@ function kuri_fury_buff()
 		-- If we have Diamond Flask, use it
 		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.DiamondFlaskEffect, "player") then
 			Zorlen_useTrinketByName(LOCALIZATION_KURI_DPS.DiamondFlask)
+		end
+		
+		-- If we have Cloudkeeper Legplates, use it
+		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.HeavenBlessing, "player") then
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.CloudkeeperLegplates)
 		end
 
 		-- If we have low rage, we can spend Migthy Rage Potion
