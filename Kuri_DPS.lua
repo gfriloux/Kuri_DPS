@@ -78,10 +78,12 @@ function kuri_fury_buff()
 		end
 
 		-- If we have low rage, we can spend Migthy Rage Potion
-		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.MightyRage, "player") then
-			if UnitMana("player") <= 50 then
-				Zorlen_useItemByName(LOCALIZATION_KURI_DPS.MightRagePotion)
-			end
+		-- Limited to raids
+		if         UnitMana("player") <= 50
+		   and not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.MightyRage, "player")
+		   and     UnitInRaid("player")
+		then
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.MightRagePotion)
 		end
 	end
 end
