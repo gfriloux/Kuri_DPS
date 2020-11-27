@@ -13,6 +13,22 @@ function kuri_fury_buff()
 	if not isBattleShoutActive() then
 		castBattleShout()
 	end
+
+	-- If Primal Blessing procs, we want to burst our PA
+	if Zorlen_checkBuffByName("Primal Blessing", "player") then
+
+		-- If we have Diamond Flask, use it
+		if not Zorlen_checkBuffByName("Diamond Flask", "player") then
+			Zorlen_useTrinketByName("Diamond Flask")
+		end
+
+		-- If we have low rage, we can spend Migthy Rage Potion
+		if not Zorlen_checkBuffByName("Migthy Rage", "player") then
+			if UnitMana("player") <= 50 then
+				Zorlen_useItemByName("Mighty Rage Potion")
+			end
+		end
+	end
 end
 
 function kuri_fury_dual_strike()
