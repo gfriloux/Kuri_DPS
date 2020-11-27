@@ -34,7 +34,13 @@ function kuri_fury_dual_strike()
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
-		castHeroicStrike()
+		-- If we have Flurry UP, we can use next attack skill for more damage
+		if Zorlen_checkBuffByName("Flurry", "player") then
+			castHeroicStrike()
+		-- Otherwise, we want an instant skill to proc Flurry
+		else
+			castHamstring()
+		end
 	end
 
 	-- Use Bloodthirst as main skill
