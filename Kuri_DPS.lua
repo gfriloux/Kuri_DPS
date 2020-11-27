@@ -78,10 +78,13 @@ end
 function kuri_fury_dual_strike()
 	-- We do not touch CC targets
 	if Zorlen_isNoDamageCC("target") then
+		backOff()
 		return true
 	end
 
 	kuri_fury_buff()
+	
+	castAttack()
 	
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
