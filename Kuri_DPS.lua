@@ -46,7 +46,9 @@ function kuri_fury_dual_strike()
 	end
 
 	-- We want max sunder armor for maximum DPS ASAP
-	castSunderArmor()
+	if UnitInRaid("player") then
+		castSunderArmor()
+	end
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
