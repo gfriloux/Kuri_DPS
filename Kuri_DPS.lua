@@ -16,6 +16,9 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Jambières du Gardien des nuages"
 	LOCALIZATION_KURI_DPS["HeavenBlessing"] = "Bénédiction céleste"
 	LOCALIZATION_KURI_DPS["Overpower"] = "Fulgurance"
+	LOCALIZATION_KURI_DPS["Recklessness"] = "Témérité"
+	LOCALIZATION_KURI_DPS["LimitedInvulnerabilityPotion"] = "Potion d'invulnérabilité limitée"
+	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnérabilité"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -29,8 +32,32 @@ else
 	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Cloudkeeper Legplates"
 	LOCALIZATION_KURI_DPS["HeavenBlessing"] = "Heaven\'s Blessing"
 	LOCALIZATION_KURI_DPS["Overpower"] = "Overpower"
+	LOCALIZATION_KURI_DPS["Recklessness"] = "Recklessness"
+	LOCALIZATION_KURI_DPS["LimitedInvulnerabilityPotion"] = "Limited Invulnerability Potion"
+	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnerability"
 end
 
+function kuri_fury_buff_burst()
+		-- If we have Diamond Flask, use it
+		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.DiamondFlaskEffect, "player") then
+			Zorlen_useTrinketByName(LOCALIZATION_KURI_DPS.DiamondFlask)
+		end
+
+		-- If we have Cloudkeeper Legplates, use it
+		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.HeavenBlessing, "player") then
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.CloudkeeperLegplates)
+		end
+
+		-- Bursts limited to raids due to cost.
+		if UnitInRaid("player") then
+			-- If we have low rage, we can spend Migthy Rage Potion
+			if         UnitMana("player") <= 50
+		   	   and not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.MightyRage, "player")
+			then
+				Zorlen_useItemByName(LOCALIZATION_KURI_DPS.MightRagePotion)
+			end
+		end
+end
 
 function kuri_fury_buff()
 	-- If we are feared, we want to neutralize it
@@ -64,26 +91,29 @@ function kuri_fury_buff()
 		end
 	end
 
-	-- If Primal Blessing procs, we want to burst our PA
-	if Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.PrimalBlessing, "player") then
+	-- Under specific circumtances, we need to burst our PA.
+	      -- Primal Blessing proc
+	if    Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.PrimalBlessing, "player")
+		  -- Recklessness ultimate
+	   or Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.Recklessness, "player")
+	then
+		kuri_fury_buff_burst()
+	end
+end
 
-		-- If we have Diamond Flask, use it
-		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.DiamondFlaskEffect, "player") then
-			Zorlen_useTrinketByName(LOCALIZATION_KURI_DPS.DiamondFlask)
-		end
-		
-		-- If we have Cloudkeeper Legplates, use it
-		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.HeavenBlessing, "player") then
-			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.CloudkeeperLegplates)
+function kuri_survive()
+	if     UnitInRaid("player")
+	       -- If we take aggro, we need to quickly use survival techniques
+	   and Zorlen_isEnemyTargetingYou() then
+
+		-- Check for invulnerability buff
+		if Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.Invulnerability, "player") then
+			return
 		end
 
-		-- If we have low rage, we can spend Migthy Rage Potion
-		-- Limited to raids
-		if         UnitMana("player") <= 50
-		   and not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.MightyRage, "player")
-		   and     UnitInRaid("player")
-		then
-			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.MightRagePotion)
+		-- Take invuln potion
+		if Zorlen_useItemByName(LOCALIZATION_KURI_DPS.LimitedInvulnerabilityPotion) then
+			return
 		end
 	end
 end
@@ -135,7 +165,7 @@ function kuri_fury_dual_strike()
 	-- If we have 25 rage of less, we can change stance without loosing rage.
 	-- If overpower is available, let's use it!
 	if     UnitMana("player") <= 25
-	   and Zorlen_isActionInRangeBySpellName(LOCALIZATION_KURI_DPS.Overpower)
+	   and Zorlen_GetTimer("TargetDodgedYou_Overpower", nil, "InternalZorlenSpellTimers") > 1
 	then
 		castBattleStance()
 		castOverpower()
