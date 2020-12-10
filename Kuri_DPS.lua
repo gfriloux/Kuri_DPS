@@ -11,6 +11,7 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["MightyRagePotion"] = "Potion de rage puissante"
 	LOCALIZATION_KURI_DPS["Flurry"] = "Rafale"
 	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir des géants"
+	LOCALIZATION_KURI_DPS["ElixirGiantsPotion"] = "Elixir des géants"
 	LOCALIZATION_KURI_DPS["ElixirMongoose"] = "Elixir de la Mangouste"
 	LOCALIZATION_KURI_DPS["JujuPower"] = "Pouvoir de Juju"
 	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Jambières du Gardien des nuages"
@@ -26,7 +27,8 @@ else
 	LOCALIZATION_KURI_DPS["MightyRage"] = "Mighty Rage"
 	LOCALIZATION_KURI_DPS["MightyRagePotion"] = "Mighty Rage Potion"
 	LOCALIZATION_KURI_DPS["Flurry"] = "Flurry"
-	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir of Giants"
+	LOCALIZATION_KURI_DPS["ElixirGiantsPotion"] = "Elixir of Giants"
+	LOCALIZATION_KURI_DPS["ElixirGiants"] = "Elixir of the Giants"
 	LOCALIZATION_KURI_DPS["ElixirMongoose"] = "Elixir of the Mongoose"
 	LOCALIZATION_KURI_DPS["JujuPower"] = "Juju Power"
 	LOCALIZATION_KURI_DPS["CloudkeeperLegplates"] = "Cloudkeeper Legplates"
@@ -79,7 +81,7 @@ function kuri_fury_buff()
 	-- Let's manage the most basic ones.
 	if UnitInRaid("player") then
 		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.ElixirGiants, "player") then
-			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.ElixirGiants)
+			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.ElixirGiantsPotion)
 		end
 		
 		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.ElixirMongoose, "player") then
@@ -126,6 +128,7 @@ function kuri_fury_dual_strike()
 	end
 
 	kuri_fury_buff()
+	kuri_survive()
 
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
@@ -143,9 +146,9 @@ function kuri_fury_dual_strike()
 	castAttack()
 
 	-- We want max sunder armor for maximum DPS ASAP
-	if UnitInRaid("player") then
-		castSunderArmor()
-	end
+	--if UnitInRaid("player") then
+	--	castSunderArmor()
+	--end
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
