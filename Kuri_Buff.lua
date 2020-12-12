@@ -64,6 +64,8 @@ end
 
 
 function kuri_buff_tank()
+	local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
+
 	-- We want Gift of Arthas if available
 	if UnitInRaid("player") then
 		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.GiftArthas, "player") then
@@ -80,6 +82,12 @@ function kuri_buff_tank()
 	-- If we are under 50% HP, it is time to cast our racial
 	-- if not on CD
 	if percent <= 50 then
+		Zorlen_castSpellByName(LOCALIZATION_KURI_DPS.Berserking)
+	end
+	
+	-- If we are under 50% HP, it is time to cast our racial
+	-- if not on CD
+	if percent <= 20 then
 		Zorlen_castSpellByName(LOCALIZATION_KURI_DPS.Berserking)
 	end
 end
