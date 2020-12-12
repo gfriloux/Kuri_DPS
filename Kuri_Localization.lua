@@ -20,6 +20,7 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["LimitedInvulnerabilityPotion"] = "Potion d'invulnérabilité limitée"
 	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnérabilité"
 	LOCALIZATION_KURI_DPS["GiftArthas"] = "Don d\'Arthas"
+	LOCALIZATION_KURI_DPS["Berserking"] = "Berserker"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -38,4 +39,5 @@ else
 	LOCALIZATION_KURI_DPS["LimitedInvulnerabilityPotion"] = "Limited Invulnerability Potion"
 	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnerability"
 	LOCALIZATION_KURI_DPS["GiftArthas"] = "Gift of Arthas"
+	LOCALIZATION_KURI_DPS["Berserking"] = "Berserking"
 end

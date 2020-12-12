@@ -76,4 +76,10 @@ function kuri_buff_tank()
 	if UnitMana("player") <= 10 then
 		castBerserkerRageSwap()
 	end
+	
+	-- If we are under 50% HP, it is time to cast our racial
+	-- if not on CD
+	if percent <= 50 then
+		Zorlen_castSpellByName(LOCALIZATION_KURI_DPS.Berserking)
+	end
 end

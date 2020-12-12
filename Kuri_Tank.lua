@@ -4,12 +4,6 @@ function kuri_tank_off()
 	kuri_buff_tank()
 	kuri_fury_buff()
 
-	-- If we are under 50% HP, it is time to cast our racial
-	-- if not on CD
-	if percent <= 50 then
-		Zorlen_castSpellByName(Berserking)
-	end
-	
 	-- We need 5 stacks of SunderArmor()
 	castSunderArmor()
 	
@@ -38,12 +32,6 @@ function kuri_tank()
 	-- Make sure we are in defensive stance
 	if not isDefensiveStance() then
 		castDefensiveStance()
-	end
-
-	-- If we are under 50% HP, it is time to cast our racial
-	-- if not on CD
-	if percent <= 50 then
-		Zorlen_castSpellByName(Berserking)
 	end
 
 	-- Taunt will be cast if target is not targetting you
