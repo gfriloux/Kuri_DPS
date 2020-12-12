@@ -72,5 +72,8 @@ function kuri_buff_tank()
 	end
 	
 	-- We use berserker rage when available to gain more rage
-	castBerserkerRageSwap()
+	-- but only if we are on low rage to avoid losing much
+	if UnitMana("player") <= 10 then
+		castBerserkerRageSwap()
+	end
 end

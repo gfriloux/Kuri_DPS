@@ -18,8 +18,14 @@ function kuri_tank_off()
 		castHeroicStrike()
 	end
 	
-	-- Use Bloodthirst as main skill
-	castBloodthirst()
+	-- If we get here, every main threat skills were used
+	
+	-- Use execute if target's HP below 20%
+	if Zorlen_TargetIsDieingEnemy() then
+		castExecute()
+	else
+		castBloodthirst()
+	end
 end
 
 
@@ -57,14 +63,12 @@ function kuri_tank()
 		castHeroicStrike()
 	end
 	
-	-- Use Bloodthirst as main skill
-	castBloodthirst()
-	
-	-- If we get here, we lack rage for Bloodthirst or it is on CD
-	-- Every main tanking skills were used
+	-- If we get here, every main threat skills were used
 	
 	-- Use execute if target's HP below 20%
 	if Zorlen_TargetIsDieingEnemy() then
 		castExecute()
+	else
+		castBloodthirst()
 	end
 end
