@@ -4,4 +4,8 @@
 ## Version: 0.3
 ## Dependencies: Zorlen
 
+Kuri_Localization.lua
+Kuri_Buff.lua
 Kuri_DPS.lua
+Kuri_Tank.lua
+Kuri_Macros.lua
