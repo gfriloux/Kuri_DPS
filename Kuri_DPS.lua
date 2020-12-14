@@ -38,6 +38,9 @@ function kuri_fury_dual_strike()
 		castBerserkerStance()
 	end
 
+	if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
+		Zorlen_assist()
+	end
 	castAttack()
 
 	-- We want max sunder armor for maximum DPS ASAP
