@@ -88,6 +88,6 @@ function kuri_buff_tank()
 	-- If we are under 50% HP, it is time to cast our racial
 	-- if not on CD
 	if percent <= 20 then
-		Zorlen_castSpellByName(LOCALIZATION_KURI_DPS.Berserking)
+		castLastStand()
 	end
 end

@@ -25,14 +25,21 @@ end
 
 function kuri_tank()
 	local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
-	
+
 	kuri_buff_tank()
 	kuri_fury_buff()
-	
+
+	-- If enemy is at correct distance, lets charge it
+	if Zorlen_GiveMaxTargetRange(8, 25) then
+		swapChargeAndIntercept()
+	end
+
 	-- Make sure we are in defensive stance
 	if not isDefensiveStance() then
 		castDefensiveStance()
 	end
+
+	castAttack()
 
 	-- Taunt will be cast if target is not targetting you
 	castTaunt()
