@@ -21,6 +21,10 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnérabilité"
 	LOCALIZATION_KURI_DPS["GiftArthas"] = "Don d\'Arthas"
 	LOCALIZATION_KURI_DPS["Berserking"] = "Berserker"
+	LOCALIZATION_KURI_DPS["DemoralizingShout"] = "Cri d\195\169moralisant".
+	LOCALIZATION_KURI_DPS["ThunderClap"] = "Coup de tonnerre"
+	LOCALIZATION_KURI_DPS["Hakkar"] = "Hakkar"
+	LOCALIZATION_KURI_DPS["Ossirian"] = "Ossirian l'Intouché"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -40,4 +44,8 @@ else
 	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnerability"
 	LOCALIZATION_KURI_DPS["GiftArthas"] = "Gift of Arthas"
 	LOCALIZATION_KURI_DPS["Berserking"] = "Berserking"
+	LOCALIZATION_KURI_DPS["DemoralizingShout"] = "Demoralizing Shout"
+	LOCALIZATION_KURI_DPS["ThunderClap"] = "Thunder Clap"
+	LOCALIZATION_KURI_DPS["Hakkar"] = "Hakkar"
+	LOCALIZATION_KURI_DPS["Ossirian"] = "Ossirian the Unscarred"
 end

@@ -4,6 +4,11 @@ function kuri_tank_off()
 	kuri_buff_tank()
 	kuri_fury_buff()
 
+	-- Make sure we are in defensive stance
+	if not isDefensiveStance() then
+		castDefensiveStance()
+	end
+
 	-- We need 5 stacks of SunderArmor()
 	castSunderArmor()
 	
@@ -42,7 +47,9 @@ function kuri_tank()
 	castAttack()
 
 	-- Taunt will be cast if target is not targetting you
-	castTaunt()
+	if not Kuri_ImmuneMobList_Taunt() then
+		castTaunt()
+	end
 
 	-- We want shield block to be up as much as possible
 	castShieldBlock()
