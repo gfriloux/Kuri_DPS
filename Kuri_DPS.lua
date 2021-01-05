@@ -50,6 +50,26 @@ function kuri_fury_dual_strike()
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
+		-- If no near ennemy is CC, we can use WhirlWind
+		local danger = 0
+		for i = 1, 4 do
+			TargetNearestEnemy()
+			if not CheckInteractDistance("target", 9) then
+				break
+			end
+
+			if Zorlen_isNoDamageCC("target") then
+				danger = 1
+			end
+		end
+
+		if not danger then
+			castWhirlwind()
+		end
+		
+		-- It seems WhirlWind did not cast (cooldown or danger)
+		-- Lets continue dump techniques
+
 		-- If we have Flurry UP, we can use next attack skill for more damage
 		if Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.Flurry, "player") then
 			castHeroicStrike()
