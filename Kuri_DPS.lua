@@ -21,14 +21,14 @@ function kuri_fury_dual_strike()
 		backOff()
 		return true
 	end
-
-	kuri_fury_buff()
-	kuri_survive()
-
+	
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
 		swapChargeAndIntercept()
 	end
+
+	kuri_fury_buff()
+	kuri_survive()
 
 	-- If we are not in zerk stance, and overpower is not available
 	-- we have no reason to not be in zerk stance!
