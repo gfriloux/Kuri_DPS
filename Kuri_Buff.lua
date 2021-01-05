@@ -26,6 +26,12 @@ function kuri_fury_buff()
 		forceBerserkerRage()
 	end
 
+	-- If we are under 50% HP, it is time to cast our racial
+	-- if not on CD
+	if percent <= 50 then
+		Zorlen_castSpellByName(LOCALIZATION_KURI_DPS.Berserking)
+	end
+
 	-- We want more rage
 	if UnitMana("player") < 10 then
 		castBloodrage()
@@ -77,12 +83,6 @@ function kuri_buff_tank()
 	-- but only if we are on low rage to avoid losing much
 	if UnitMana("player") <= 10 then
 		castBerserkerRageSwap()
-	end
-	
-	-- If we are under 50% HP, it is time to cast our racial
-	-- if not on CD
-	if percent <= 50 then
-		Zorlen_castSpellByName(LOCALIZATION_KURI_DPS.Berserking)
 	end
 	
 	-- If we are under 50% HP, it is time to cast our racial
