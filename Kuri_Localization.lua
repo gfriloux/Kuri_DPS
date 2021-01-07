@@ -25,6 +25,7 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["ThunderClap"] = "Coup de tonnerre"
 	LOCALIZATION_KURI_DPS["Hakkar"] = "Hakkar"
 	LOCALIZATION_KURI_DPS["Ossirian"] = "Ossirian l'Intouché"
+	LOCALIZATION_KURI_DPS["Slam"] = "Heurtoir"
 else
 	LOCALIZATION_KURI_DPS["PrimalBlessing"] = "Primal Blessing"
 	LOCALIZATION_KURI_DPS["DiamondFlaskEffect"] = "Diamond Flask"
@@ -48,4 +49,5 @@ else
 	LOCALIZATION_KURI_DPS["ThunderClap"] = "Thunder Clap"
 	LOCALIZATION_KURI_DPS["Hakkar"] = "Hakkar"
 	LOCALIZATION_KURI_DPS["Ossirian"] = "Ossirian the Unscarred"
+	LOCALIZATION_KURI_DPS["Slam"] = "Slam"
 end
