@@ -21,7 +21,7 @@ if LOCALE == "frFR" then
 	LOCALIZATION_KURI_DPS["Invulnerability"] = "Invulnérabilité"
 	LOCALIZATION_KURI_DPS["GiftArthas"] = "Don d\'Arthas"
 	LOCALIZATION_KURI_DPS["Berserking"] = "Berserker"
-	LOCALIZATION_KURI_DPS["DemoralizingShout"] = "Cri d\195\169moralisant".
+	LOCALIZATION_KURI_DPS["DemoralizingShout"] = "Cri d\195\169moralisant"
 	LOCALIZATION_KURI_DPS["ThunderClap"] = "Coup de tonnerre"
 	LOCALIZATION_KURI_DPS["Hakkar"] = "Hakkar"
 	LOCALIZATION_KURI_DPS["Ossirian"] = "Ossirian l'Intouché"

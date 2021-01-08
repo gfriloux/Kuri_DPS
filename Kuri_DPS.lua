@@ -63,50 +63,35 @@ function kuri_fury_twohand()
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
 		-- If no near ennemy is CC, we can use WhirlWind
-		local danger = 0
-		for i = 1, 4 do
-			TargetNearestEnemy()
-			if not CheckInteractDistance("target", 9) then
-				break
-			end
-
-			if Zorlen_isNoDamageCC("target") then
-				danger = 1
-			end
-		end
-
-		if not danger then
+--		local danger = 0
+--		local t      = UnitName("target")
+--		for i = 1, 4 do
+--			TargetNearestEnemy()
+--			if not CheckInteractDistance("target", 9) then
+--				break
+--			end
+--			if Zorlen_isNoDamageCC("target") then
+--				danger = 1
+--			end
+--		end
+--		TargetByName(t, true)
+--		if danger == 0 then
 			castWhirlwind()
-		end
+--		end
 		
 		-- It seems WhirlWind did not cast (cooldown or danger)
 		-- Lets continue dump techniques
 
-		-- If we have Flurry UP, we can use next attack skill for more damage
-		if Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.Flurry, "player") then
-			-- If next swing is in more than 1.5s, using Slam IS a DPS boost.
-			if st_timer > 1.5 then
-				castSlam()
-			end
-		-- Otherwise, we want an instant skill to proc Flurry
-		else
-			castHamstring()
+		-- If next swing is in more than 1.5s, using Slam IS a DPS boost.
+		if st_timer > 1.5 then
+			castSlam()
 		end
 	end
 
 	-- If we get here, we have less than 30 rage, or Bloodthirst is in CD.
-	-- If we have 25 rage of less, we can change stance without loosing rage.
-	-- If overpower is available, let's use it!
-	if     UnitMana("player") <= 25
-	   and Zorlen_GetTimer("TargetDodgedYou_Overpower", nil, "InternalZorlenSpellTimers") > 1
-	then
-		castBattleStance()
-		castOverpower()
-	end
 
 	-- Use execute if target's HP below 20%
 	if Zorlen_TargetIsDieingEnemy() then
-		castDeathWish()
 		castExecute()
 	end
 	
@@ -188,7 +173,6 @@ function kuri_fury_dual_strike()
 
 	-- Use execute if target's HP below 20%
 	if Zorlen_TargetIsDieingEnemy() then
-		castDeathWish()
 		castExecute()
 	end
 	

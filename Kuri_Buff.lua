@@ -21,6 +21,8 @@ function kuri_fury_buff_burst()
 end
 
 function kuri_fury_buff()
+	local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
+
 	-- If we are feared, we want to neutralize it
 	if Zorlen_isCrowedControlled("player") then
 		forceBerserkerRage()
