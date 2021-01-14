@@ -9,3 +9,13 @@ function kuri_tank()
 	Zorlen_MakeMacro("KAssist", "/run Zorlen_assist()", 0, "Spell_Holy_PrayerofSpirit", nil, 1)
 	Zorlen_MakeMacro("KClearAssist", "/run Zorlen_clearAssist()", 0, "Ability_BullRush", nil, 1)
 end
+
+function kuri_we_want_aggro()
+	Zorlen_debug("We will TAUNT!", 1)
+	WE_WANT_AGGRO = 1
+end
+
+function kuri_we_dont_want_aggro()
+	Zorlen_debug("We will NOT taunt!", 1)
+	WE_WANT_AGGRO = 0
+end

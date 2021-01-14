@@ -27,12 +27,12 @@ function kuri_tank_off()
 	end
 end
 
-
-function kuri_tank()
+function kuri_tank_main()
 	local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
 
 	kuri_buff_tank()
 	kuri_fury_buff()
+	kuri_debuff_attack()
 
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
@@ -47,7 +47,7 @@ function kuri_tank()
 	castAttack()
 
 	-- Taunt will be cast if target is not targetting you
-	if not Kuri_ImmuneMobList_Taunt() then
+	if WE_WANT_AGGRO == 1 then
 		castTaunt()
 	end
 

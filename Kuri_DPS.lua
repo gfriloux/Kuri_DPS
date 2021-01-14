@@ -1,3 +1,6 @@
+WE_WANT_AGGRO = 0
+
+
 function castSlam(test)
 	local z = {}
 	z.Test = test
@@ -12,6 +15,10 @@ function castSlam(test)
 end
 
 function kuri_survive()
+	if WE_WANT_AGGRO = 1 then
+		return
+	end
+
 	if     UnitInRaid("player")
 	       -- If we take aggro, we need to quickly use survival techniques
 	   and Zorlen_isEnemyTargetingYou() then
@@ -55,6 +62,12 @@ function kuri_fury_twohand()
 	if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
 		Zorlen_assist()
 	end
+
+	-- Taunt will be cast if target is not targetting you
+	if WE_WANT_AGGRO == 1 then
+		castTaunt()
+	end
+
 	castAttack()
 
 	-- Use Bloodthirst as main skill
@@ -126,6 +139,11 @@ function kuri_fury_dual_strike()
 		Zorlen_assist()
 	end
 	castAttack()
+
+	-- Taunt will be cast if target is not targetting you
+	if WE_WANT_AGGRO == 1 then
+		castTaunt()
+	end
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then

@@ -5,6 +5,7 @@
 ## Dependencies: Zorlen
 
 Kuri_Localization.lua
+Kuri_ImmuneMobList.lua
 Kuri_Buff.lua
 Kuri_Debuff.lua
 Kuri_DPS.lua
