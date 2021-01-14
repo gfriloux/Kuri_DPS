@@ -15,7 +15,7 @@ function castSlam(test)
 end
 
 function kuri_survive()
-	if WE_WANT_AGGRO = 1 then
+	if WE_WANT_AGGRO == 1 then
 		return
 	end
 
