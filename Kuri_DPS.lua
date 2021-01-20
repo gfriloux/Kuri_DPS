@@ -1,5 +1,14 @@
-WE_WANT_AGGRO = 0
+-- Glossary :
+-- TPR             = Threat Per Rage.
+--       Number of threat generated for each rage point used.
+--       Example : Revenge Rank 6 for 355 Threat, at the cost of 5 Rage.
+--                 It equals to 355 / 5 = 71 TPR.
+-- Threat Modifier = Conversion of threat per damage done.
+--                   Defense stance                = 1.30 (1.00 + 10%)
+--                   Defense stance + 5/5 Defiance = 1.45
+--                   1000 damage hit = 1000 * 1.45 = 1450 threat.
 
+WE_WANT_AGGRO = 0
 
 function castSlam(test)
 	local z = {}
@@ -51,15 +60,21 @@ function kuri_fury_twohand()
 	kuri_survive()
 	kuri_debuff_attack()
 
-	-- If we are not in zerk stance, and overpower is not available
-	-- we have no reason to not be in zerk stance!
-	if     not isBerserkerStance()
-	   and     Zorlen_isActionInRangeBySpellName(LOCALIZATION_KURI_DPS.Overpower)
-	then
-		castBerserkerStance()
+	-- If we want aggro, we are tanking.
+	-- In this case, we use Def stance.
+	-- Otherwise, we want Zerk!
+	if      WE_WANT_AGGRO == 1 then
+		if not isDefensiveStance() then
+			castDefensiveStance()
+		end
+	else
+		if not isBerserkerStance() then
+			castBerserkerStance()
+		end
 	end
 
-	if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
+	if     not WE_WANT_AGGRO == 1
+	   and     (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
 		Zorlen_assist()
 	end
 
@@ -70,28 +85,23 @@ function kuri_fury_twohand()
 
 	castAttack()
 
-	-- Use Bloodthirst as main skill
+	if WE_WANT_AGGRO == 1 then
+		-- Taunt will be cast if target is not targetting you
+		castTaunt()
+
+		-- Revenge : 71 TPR, we want to use it every time its possible as its only 5 Rage point.
+		-- As we dont wear a shield, it will not happen so often.
+		castRevenge()
+	end
+
+	-- Use Bloodthirst as main skill.
+	-- 1500 damage Bloodthirst equals to 2175 Threat for 30 Rage = 72.5 TPR
 	castBloodthirst()
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
-		-- If no near ennemy is CC, we can use WhirlWind
---		local danger = 0
---		local t      = UnitName("target")
---		for i = 1, 4 do
---			TargetNearestEnemy()
---			if not CheckInteractDistance("target", 9) then
---				break
---			end
---			if Zorlen_isNoDamageCC("target") then
---				danger = 1
---			end
---		end
---		TargetByName(t, true)
---		if danger == 0 then
-			castWhirlwind()
---		end
-		
+		castWhirlwind()
+
 		-- It seems WhirlWind did not cast (cooldown or danger)
 		-- Lets continue dump techniques
 
@@ -107,7 +117,7 @@ function kuri_fury_twohand()
 	if Zorlen_TargetIsDieingEnemy() then
 		castExecute()
 	end
-	
+
 	return true
 end
 
@@ -127,12 +137,22 @@ function kuri_fury_dual_strike()
 	kuri_survive()
 	kuri_debuff_attack()
 
-	-- If we are not in zerk stance, and overpower is not available
-	-- we have no reason to not be in zerk stance!
-	if     not isBerserkerStance()
-	   and     Zorlen_isActionInRangeBySpellName(LOCALIZATION_KURI_DPS.Overpower)
-	then
-		castBerserkerStance()
+	-- If we want aggro, we are tanking.
+	-- In this case, we use Def stance.
+	-- Otherwise, we want Zerk!
+	if      WE_WANT_AGGRO == 1 then
+		if not isDefensiveStance() then
+			castDefensiveStance()
+		end
+	else
+		if not isBerserkerStance() then
+			castBerserkerStance()
+		end
+	end
+
+	if     not WE_WANT_AGGRO == 1
+	   and     (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
+		Zorlen_assist()
 	end
 
 	if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
@@ -140,30 +160,28 @@ function kuri_fury_dual_strike()
 	end
 	castAttack()
 
-	-- Taunt will be cast if target is not targetting you
 	if WE_WANT_AGGRO == 1 then
+		-- Taunt will be cast if target is not targetting you
 		castTaunt()
+
+		-- Revenge : 71 TPR, we want to use it every time its possible as its only 5 Rage point.
+		-- As we dont wear a shield, it will not happen so often.
+		castRevenge()
 	end
+
+	-- Use Bloodthirst as main skill.
+	-- 1500 damage Bloodthirst equals to 2175 Threat for 30 Rage = 72.5 TPR
+	castBloodthirst()
 
 	-- Dump extra rage
 	if UnitMana("player") >= 60 then
-		-- If no near ennemy is CC, we can use WhirlWind
-		local danger = 0
-		for i = 1, 4 do
-			TargetNearestEnemy()
-			if not CheckInteractDistance("target", 9) then
-				break
-			end
-
-			if Zorlen_isNoDamageCC("target") then
-				danger = 1
-			end
-		end
-
-		if not danger then
+		if not isDefensiveStance() then
 			castWhirlwind()
+		else
+			castBattleShout()
+			castUnlimitedSunderArmor()
 		end
-		
+
 		-- It seems WhirlWind did not cast (cooldown or danger)
 		-- Lets continue dump techniques
 
@@ -176,18 +194,7 @@ function kuri_fury_dual_strike()
 		end
 	end
 
-	-- Use Bloodthirst as main skill
-	castBloodthirst()
-	
 	-- If we get here, we have less than 30 rage, or Bloodthirst is in CD.
-	-- If we have 25 rage of less, we can change stance without loosing rage.
-	-- If overpower is available, let's use it!
-	if     UnitMana("player") <= 25
-	   and Zorlen_GetTimer("TargetDodgedYou_Overpower", nil, "InternalZorlenSpellTimers") > 1
-	then
-		castBattleStance()
-		castOverpower()
-	end
 
 	-- Use execute if target's HP below 20%
 	if Zorlen_TargetIsDieingEnemy() then
