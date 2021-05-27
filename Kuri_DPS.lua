@@ -24,6 +24,13 @@ function castSlam(test)
 end
 
 function kuri_survive()
+	local percent = (UnitHealth("player") / UnitHealthMax("player")) * 100
+
+	-- If we are on low HP, we want to use Last Stand if available
+	if percent <= 30 then
+		castLastStand()
+	end
+
 	if WE_WANT_AGGRO == 1 then
 		return
 	end
@@ -64,8 +71,18 @@ function kuri_fury_twohand()
 	-- In this case, we use Def stance.
 	-- Otherwise, we want Zerk!
 	if      WE_WANT_AGGRO == 1 then
-		if not isDefensiveStance() then
-			castDefensiveStance()
+
+		-- If target has less than 20% HP, we want to full execute him
+		if Zorlen_TargetIsDieingEnemy() then
+			if not isBattleStance() then
+				castBattleStance()
+			end
+			castOverpower()
+			castExecute()
+		else
+			if not isDefensiveStance() then
+				castDefensiveStance()
+			end
 		end
 	else
 		if not isBerserkerStance() then
@@ -84,6 +101,12 @@ function kuri_fury_twohand()
 	end
 
 	castAttack()
+	
+	if isDefensiveStance() then
+		if not isDisarm() then
+			castDisarm()
+		end
+	end
 
 	if WE_WANT_AGGRO == 1 then
 		-- Taunt will be cast if target is not targetting you
@@ -141,8 +164,18 @@ function kuri_fury_dual_strike()
 	-- In this case, we use Def stance.
 	-- Otherwise, we want Zerk!
 	if      WE_WANT_AGGRO == 1 then
-		if not isDefensiveStance() then
-			castDefensiveStance()
+
+		-- If target has less than 20% HP, we want to full execute him
+		if Zorlen_TargetIsDieingEnemy() then
+			if not isBattleStance() then
+				castBattleStance()
+			end
+			castOverpower()
+			castExecute()
+		else
+			if not isDefensiveStance() then
+				castDefensiveStance()
+			end
 		end
 	else
 		if not isBerserkerStance() then
@@ -155,10 +188,13 @@ function kuri_fury_dual_strike()
 		Zorlen_assist()
 	end
 
-	if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
-		Zorlen_assist()
-	end
 	castAttack()
+	
+	if isDefensiveStance() then
+		if not isDisarm() then
+			castDisarm()
+		end
+	end
 
 	if WE_WANT_AGGRO == 1 then
 		-- Taunt will be cast if target is not targetting you
@@ -178,7 +214,11 @@ function kuri_fury_dual_strike()
 		if not isDefensiveStance() then
 			castWhirlwind()
 		else
+			
+			-- 35 TPR
 			castBattleShout()
+			
+			-- 17TPR - Lets hope we never use it
 			castUnlimitedSunderArmor()
 		end
 
@@ -209,3 +249,51 @@ function kuri_fury_aoe()
 	Zorlen_WarriorAOE()
 end
 
+
+function kuri_arms()
+	-- We do not touch CC targets
+	if Zorlen_isNoDamageCC("target") then
+		backOff()
+		return true
+	end
+
+	-- If enemy is at correct distance, lets charge it
+	if Zorlen_GiveMaxTargetRange(8, 25) then
+		swapChargeAndIntercept()
+	end
+
+	kuri_fury_buff()
+	kuri_survive()
+	kuri_debuff_attack()
+
+	if     not WE_WANT_AGGRO == 1
+	   and     (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
+		Zorlen_assist()
+	end
+
+	castAttack()
+
+	-- Overpower is our best instant skill because of its high crit rate for very low rage cost.
+	castOverpower()
+	
+	-- Use execute when mob is dieing
+	castExecute()
+
+	-- If target is not slowed, we harmstring it
+	if not isHamstring() then
+		castHamstring()
+	end
+
+	castMortalStrike()
+
+	-- Dump extra rage
+	if UnitMana("player") >= 60 then
+		castCleave()
+		castHeroicStrike()
+	end
+
+	-- Use rend as kind of last resort
+	if not isRend() then
+		castRend()
+	end
+end
