@@ -1,7 +1,7 @@
 ## Interface: 80200
 ## Title: Kuri DPS
 ## Author: Kuri
-## Version: 0.5
+## Version: 1.0
 ## Dependencies: Zorlen
 
 Kuri_Localization.lua
@@ -9,5 +9,4 @@ Kuri_ImmuneMobList.lua
 Kuri_Buff.lua
 Kuri_Debuff.lua
 Kuri_DPS.lua
-Kuri_Tank.lua
 Kuri_Macros.lua

@@ -10,6 +10,41 @@
 
 WE_WANT_AGGRO = 0
 
+function isTwoHanded()
+	local slot = GetInventorySlotInfo("MainHandSlot")
+	local link = GetInventoryItemLink("player", slot)
+	
+	if not link then
+		Zorlen_debug("You do not have a weapon equipped in the main hand.", 2)
+		return false
+	end
+
+	local itemType = Zorlen_GetItemSubType(link)
+	if    itemType == LOCALIZATION_ZORLEN["Two-Handed Swords"]
+	   or itemType == LOCALIZATION_ZORLEN["Two-Handed Axes"]
+	   or itemType == LOCALIZATION_ZORLEN["Two-Handed Maces"]
+	   or itemType == LOCALIZATION_ZORLEN["Polearms"]
+	   or itemType == LOCALIZATION_ZORLEN["Staves"]
+	then
+		return true
+	end
+	
+	return false
+end
+
+function castShieldWall(test)
+	local z = {}
+	z.Test = test
+	z.SpellName = LOCALIZATION_KURI_DPS.ShieldWall
+	if not Zorlen_Button[z.SpellName] then
+		if not Zorlen_isMainHandEquipped() then
+			return false
+		end
+		z.ManaNeeded = 0
+	end
+	return Zorlen_CastCommonRegisteredSpell(z)
+end
+
 function castSlam(test)
 	local z = {}
 	z.Test = test
@@ -31,8 +66,14 @@ function kuri_survive()
 		castLastStand()
 	end
 
+	-- We are dyeing while tanking
+	if     percent <= 20 
+	   and isDefensiveStance() then
+		castShieldWall()
+	end
+
 	if WE_WANT_AGGRO == 1 then
-		return
+		return true
 	end
 
 	if     UnitInRaid("player")
@@ -51,7 +92,7 @@ function kuri_survive()
 	end
 end
 
-function kuri_fury_twohand()
+function kuri_fury()
 	-- We do not touch CC targets
 	if Zorlen_isNoDamageCC("target") then
 		backOff()
@@ -67,154 +108,67 @@ function kuri_fury_twohand()
 	kuri_survive()
 	kuri_debuff_attack()
 
+
+	-- Will only be called if :
+	--   - You are targetted
+	--   - You are in defensive stance
+	--   - You have a shield equipped
+	castShieldBlock()
+
 	-- If we want aggro, we are tanking.
 	-- In this case, we use Def stance.
 	-- Otherwise, we want Zerk!
 	if      WE_WANT_AGGRO == 1 then
-
-		-- If target has less than 20% HP, we want to full execute him
-		if Zorlen_TargetIsDieingEnemy() then
-			if not isBattleStance() then
-				castBattleStance()
-			end
-			castOverpower()
-			castExecute()
-		else
-			if not isDefensiveStance() then
-				castDefensiveStance()
-			end
+		if not isDefensiveStance() then
+			castDefensiveStance()
 		end
-	else
-		if not isBerserkerStance() then
-			castBerserkerStance()
-		end
-	end
 
-	if     not WE_WANT_AGGRO == 1
-	   and     (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
-		Zorlen_assist()
-	end
-
-	-- Taunt will be cast if target is not targetting you
-	if WE_WANT_AGGRO == 1 then
-		castTaunt()
-	end
-
-	castAttack()
-	
-	if isDefensiveStance() then
-		if not isDisarm() then
-			castDisarm()
-		end
-	end
-
-	if WE_WANT_AGGRO == 1 then
 		-- Taunt will be cast if target is not targetting you
 		castTaunt()
 
 		-- Revenge : 71 TPR, we want to use it every time its possible as its only 5 Rage point.
 		-- As we dont wear a shield, it will not happen so often.
 		castRevenge()
+
+		-- Causes a bug with new nostalgeek core
+		--if not isDisarm() then
+		--	Zorlen_debug("castDisarm()", 1)
+		--	castDisarm()
+		--end
+	else
+		if not isBerserkerStance() then
+			castBerserkerStance()
+		end
+
+		if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
+			Zorlen_assist()
+		end
 	end
 
 	-- Use Bloodthirst as main skill.
 	-- 1500 damage Bloodthirst equals to 2175 Threat for 30 Rage = 72.5 TPR
 	castBloodthirst()
 
-	-- Dump extra rage
-	if UnitMana("player") >= 60 then
-		castWhirlwind()
+	-- If we get here, we have less than 30 rage, or Bloodthirst is on CD.
 
-		-- It seems WhirlWind did not cast (cooldown or danger)
-		-- Lets continue dump techniques
+	-- Use execute if target's HP below 20%
+	if         Zorlen_TargetIsDieingEnemy()
+	   and not isDefensiveStance() then
+		castExecute()
+	end
 
+	if isTwoHanded() then
 		-- If next swing is in more than 1.5s, using Slam IS a DPS boost.
 		if st_timer > 1.5 then
 			castSlam()
 		end
 	end
 
-	-- If we get here, we have less than 30 rage, or Bloodthirst is in CD.
-
-	-- Use execute if target's HP below 20%
-	if Zorlen_TargetIsDieingEnemy() then
-		castExecute()
-	end
-
-	return true
-end
-
-function kuri_fury_dual_strike()
-	-- We do not touch CC targets
-	if Zorlen_isNoDamageCC("target") then
-		backOff()
-		return true
-	end
-	
-	-- If enemy is at correct distance, lets charge it
-	if Zorlen_GiveMaxTargetRange(8, 25) then
-		swapChargeAndIntercept()
-	end
-
-	kuri_fury_buff()
-	kuri_survive()
-	kuri_debuff_attack()
-
-	-- If we want aggro, we are tanking.
-	-- In this case, we use Def stance.
-	-- Otherwise, we want Zerk!
-	if      WE_WANT_AGGRO == 1 then
-
-		-- If target has less than 20% HP, we want to full execute him
-		if Zorlen_TargetIsDieingEnemy() then
-			if not isBattleStance() then
-				castBattleStance()
-			end
-			castOverpower()
-			castExecute()
-		else
-			if not isDefensiveStance() then
-				castDefensiveStance()
-			end
-		end
-	else
-		if not isBerserkerStance() then
-			castBerserkerStance()
-		end
-	end
-
-	if     not WE_WANT_AGGRO == 1
-	   and     (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
-		Zorlen_assist()
-	end
-
-	castAttack()
-	
-	if isDefensiveStance() then
-		if not isDisarm() then
-			castDisarm()
-		end
-	end
-
-	if WE_WANT_AGGRO == 1 then
-		-- Taunt will be cast if target is not targetting you
-		castTaunt()
-
-		-- Revenge : 71 TPR, we want to use it every time its possible as its only 5 Rage point.
-		-- As we dont wear a shield, it will not happen so often.
-		castRevenge()
-	end
-
-	-- Use Bloodthirst as main skill.
-	-- 1500 damage Bloodthirst equals to 2175 Threat for 30 Rage = 72.5 TPR
-	castBloodthirst()
-
 	-- Dump extra rage
-	if UnitMana("player") >= 60 then
+	if UnitMana("player") >= 45 then
 		if not isDefensiveStance() then
 			castWhirlwind()
 		else
-			
 			-- 35 TPR
 			castBattleShout()
 			
@@ -224,31 +178,11 @@ function kuri_fury_dual_strike()
 
 		-- It seems WhirlWind did not cast (cooldown or danger)
 		-- Lets continue dump techniques
-
-		-- If we have Flurry UP, we can use next attack skill for more damage
-		if Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.Flurry, "player") then
-			castHeroicStrike()
-		-- Otherwise, we want an instant skill to proc Flurry
-		else
-			castHamstring()
-		end
+		castHeroicStrike()
 	end
 
-	-- If we get here, we have less than 30 rage, or Bloodthirst is in CD.
-
-	-- Use execute if target's HP below 20%
-	if Zorlen_TargetIsDieingEnemy() then
-		castExecute()
-	end
-	
 	return true
 end
-
-function kuri_fury_aoe()
-	zTargetNearestActiveEnemyWithHighestHealth()
-	Zorlen_WarriorAOE()
-end
-
 
 function kuri_arms()
 	-- We do not touch CC targets

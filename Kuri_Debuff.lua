@@ -4,6 +4,16 @@ local ThunderTime = 0;
 function kuri_debuff_attack()
 	local now = GetTime();
 
+	if UnitIsPlayer("target") then
+		if not isHamstring() then
+			castHamstring()
+		end
+
+		if not isRend() then
+			castRend()
+		end
+	end
+
 	if UnitInRaid("player") then
 		-- We debuff Power Attack if target is at distance
 		-- And not already affected
