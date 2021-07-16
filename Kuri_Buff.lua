@@ -18,7 +18,9 @@ function kuri_fury_buff()
 	end
 	
 	if Zorlen_inCombat() then
-		castDeathWish()
+		if not isDefensiveStance() then
+			CastDeathWish()
+		end
 		if not Zorlen_checkBuffByName(LOCALIZATION_KURI_DPS.DiamondFlaskEffect, "player") then
 			Zorlen_useItemByName(LOCALIZATION_KURI_DPS.DiamondFlask)
 		end

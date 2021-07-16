@@ -118,11 +118,22 @@ function kuri_fury()
 	-- If we want aggro, we are tanking.
 	-- In this case, we use Def stance.
 	-- Otherwise, we want Zerk!
-	if      WE_WANT_AGGRO == 1 then
-		if not isDefensiveStance() then
+
+	if     WE_WANT_AGGRO == 1
+	   or (    UnitInRaid("player")
+	       and Zorlen_isEnemyTargetingYou()
+	      )
+	   then
+	   	if not isDefensiveStance() then
 			castDefensiveStance()
 		end
+	else
+	   	if not isBerserkerStance() then
+			castBerserkerStance()
+		end
+	end
 
+	if      WE_WANT_AGGRO == 1 then
 		-- Taunt will be cast if target is not targetting you
 		castTaunt()
 
@@ -136,10 +147,6 @@ function kuri_fury()
 		--	castDisarm()
 		--end
 	else
-		if not isBerserkerStance() then
-			castBerserkerStance()
-		end
-
 		if (ZorlenConfig[ZORLEN_ZPN][ZORLEN_ASSIST]) then
 			Zorlen_assist()
 		end
@@ -168,16 +175,7 @@ function kuri_fury()
 	if UnitMana("player") >= 45 then
 		if not isDefensiveStance() then
 			castWhirlwind()
-		else
-			-- 35 TPR
-			castBattleShout()
-			
-			-- 17TPR - Lets hope we never use it
-			castUnlimitedSunderArmor()
 		end
-
-		-- It seems WhirlWind did not cast (cooldown or danger)
-		-- Lets continue dump techniques
 		castHeroicStrike()
 	end
 
