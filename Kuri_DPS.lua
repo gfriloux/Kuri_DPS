@@ -8,7 +8,8 @@
 --                   Defense stance + 5/5 Defiance = 1.45
 --                   1000 damage hit = 1000 * 1.45 = 1450 threat.
 
-WE_WANT_AGGRO = 0
+WE_WANT_AGGRO  = 0
+WE_WANT_CLEAVE = 0
 
 function isTwoHanded()
 	local slot = GetInventorySlotInfo("MainHandSlot")
@@ -98,7 +99,7 @@ function kuri_fury()
 		backOff()
 		return true
 	end
-	
+
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
 		swapChargeAndIntercept()
@@ -171,12 +172,20 @@ function kuri_fury()
 		end
 	end
 
-	-- Dump extra rage
+	if not isDefensiveStance() then
+		castWhirlwind()
+	end
+
 	if UnitMana("player") >= 45 then
-		if not isDefensiveStance() then
-			castWhirlwind()
+		if WE_WANT_CLEAVE == 1 then
+			castCleave()
+		else
+			if UnitMana("player") >= 70 then
+				castHeroicStrike()
+			end
 		end
-		castHeroicStrike()
+
+		castHamstring()
 	end
 
 	return true

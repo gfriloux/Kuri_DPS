@@ -16,3 +16,13 @@ function kuri_aggro_switch()
 		WE_WANT_AGGRO = 0
 	end
 end
+
+function kuri_cleave_switch()
+	if WE_WANT_CLEAVE == 0 then
+		Zorlen_debug("We will CLEAVE!", 1)
+		WE_WANT_CLEAVE = 1
+	else
+		Zorlen_debug("We will NOT TAUNT!", 1)
+		WE_WANT_CLEAVE = 0
+	end
+end
