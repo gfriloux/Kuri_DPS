@@ -22,7 +22,7 @@ function kuri_cleave_switch()
 		Zorlen_debug("We will CLEAVE!", 1)
 		WE_WANT_CLEAVE = 1
 	else
-		Zorlen_debug("We will NOT TAUNT!", 1)
+		Zorlen_debug("We will NOT CLEAVE!", 1)
 		WE_WANT_CLEAVE = 0
 	end
 end
