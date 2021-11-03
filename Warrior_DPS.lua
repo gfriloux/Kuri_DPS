@@ -98,6 +98,15 @@ table.insert(WARRIOR_DPS_ROTATION,
     --   - We have WF buff (to get more chances to trigger it).
     --   - We dont have WF buff, but we also dont have Flurry buff.
     --   - Our other instant skills are on cooldown.
+    if UnitMana("player") < 40
+       and (   isDefensiveStance()
+            or Zorlen_checkBuffByName("Flurry", "player", 0, 1)
+           )
+    then
+      return false
+    end
+    
+    return true
   end
 })
 
