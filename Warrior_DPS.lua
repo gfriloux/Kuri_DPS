@@ -123,6 +123,7 @@ table.insert(WARRIOR_DPS_ROTATION,
        or WE_WANT_CLEAVE     == 1  then
       return false
     end
+    return true
   end
 })
 
@@ -138,6 +139,7 @@ table.insert(WARRIOR_DPS_ROTATION,
        or WE_WANT_CLEAVE     == 0 then
       return false
     end
+    return true
   end
 })
 
