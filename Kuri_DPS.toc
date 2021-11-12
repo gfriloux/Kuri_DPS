@@ -4,5 +4,6 @@
 ## Version: 2.0
 ## Dependencies: Zorlen
 Warrior_DPS.lua
+Warrior_Tank.lua
 Warriors.lua
 Kuri_DPS.lua
