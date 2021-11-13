@@ -26,7 +26,7 @@ table.insert(WARRIOR_DPS_ROTATION,
   -- Se we want to use it whenever it is ready.
   condition = function()
     if        UnitMana("player") < 30
-       or not Zorlen_checkCooldownByName("Bloodthirst") then
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Bloodthirst) then
       return false
     end
     return true
@@ -42,11 +42,11 @@ table.insert(WARRIOR_DPS_ROTATION,
   -- We want to use WhirldWind when Bloodthirst is not ready.
   -- During execution phase, it is a waste to use it.
   condition = function()
-    local SpellButton    = Zorlen_Button["Bloodthirst"]
+    local SpellButton    = Zorlen_Button[LOCALIZATION_ZORLEN.Bloodthirst]
     local _, duration, _ = GetActionCooldown(SpellButton)
 
     if        UnitMana("player") < 25
-       or not Zorlen_checkCooldownByName("Whirlwind") then
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Whirlwind) then
       return false
     end
 

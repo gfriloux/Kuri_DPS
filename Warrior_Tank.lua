@@ -60,7 +60,7 @@ table.insert(WARRIOR_TANK_ROTATION,
   -- Se we want to use it whenever it is ready.
   condition = function()
     if        UnitMana("player") < 30
-       or not Zorlen_checkCooldownByName("Bloodthirst") then
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Bloodthirst) then
       return false
     end
     return true
