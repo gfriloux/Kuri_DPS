@@ -8,7 +8,7 @@ table.insert(WARRIOR_TANK_ROTATION,
   end,
   condition = function()
     if        WE_WANT_TAUNT == 0
-       or not Zorlen_checkCooldownByName("Taunt") then
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Taunt) then
       return false
     end
     return true
@@ -27,7 +27,7 @@ table.insert(WARRIOR_TANK_ROTATION,
   end,
   condition = function()
     if        UnitMana("player") < 10
-       or not Zorlen_checkCooldownByName("Shield Block") then
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.ShieldBlock) then
       return false
     end
     return true
@@ -43,7 +43,7 @@ table.insert(WARRIOR_TANK_ROTATION,
   -- Revenge : 71 TPR, we want to use it every time its possible as its only 5 Rage point.
   condition = function()
     if        UnitMana("player") < 5
-       or not Zorlen_checkCooldownByName("Revenge") then
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Revenge) then
       return false
     end
     return true
