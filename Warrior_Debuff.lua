@@ -11,8 +11,10 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
   -- Using Sunder Armor helps to maximize overall DPS.
   -- It also helps the tank to spend his rage on more efficient threat/mitigation skills.
   condition = function()
-    if    UnitMana("player") < 15
-       or isSunderFull("target") then
+    if        UnitMana("player") < 15
+       or     isSunderFull("target")
+       or not UnitInRaid("player")
+    then
       return false
     end
     return true
