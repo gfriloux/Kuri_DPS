@@ -83,7 +83,9 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     castDisarm()
   end,
   condition = function()
-    if isDisarm() then
+    if        isDisarm() 
+       or not isDefensiveStance()
+    then
       return false
     end
 
