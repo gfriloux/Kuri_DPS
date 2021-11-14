@@ -167,7 +167,6 @@ function kuri_warrior_dps()
 
   for key, value in next,WARRIOR_DPS_ROTATION,nil do
     if value.condition() == true then
-      Zorlen_debug("Cast " .. value.name, 1)
       value.execution()
     end
   end

@@ -94,7 +94,6 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
 function kuri_warrior_debuff()
   for key, value in next,WARRIOR_DEBUFF_ROTATION,nil do
     if value.condition() == true then
-      Zorlen_debug("Cast " .. value.name, 1)
       value.execution()
     end
   end
