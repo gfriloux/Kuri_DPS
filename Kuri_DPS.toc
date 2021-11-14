@@ -3,6 +3,7 @@
 ## Author: Kuri
 ## Version: 2.0
 ## Dependencies: Zorlen
+Warrior_Debuff.lua
 Warrior_DPS.lua
 Warrior_Tank.lua
 Warriors.lua

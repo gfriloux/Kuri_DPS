@@ -34,6 +34,8 @@ end
 
 
 function kuri_warrior_rotation()
+  kuri_warrior_debuff()
+
   if WE_WANT_AGGRO == 0 then
     kuri_warrior_dps()
   else
