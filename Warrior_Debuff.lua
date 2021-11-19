@@ -78,6 +78,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
   end
 })
 
+--[[
 table.insert(WARRIOR_DEBUFF_ROTATION,
 {
   name      = "Disarm",
@@ -94,6 +95,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     return true
   end
 })
+--]]
 
 function kuri_warrior_debuff()
   for key, value in next,WARRIOR_DEBUFF_ROTATION,nil do
