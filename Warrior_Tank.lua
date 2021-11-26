@@ -67,34 +67,23 @@ table.insert(WARRIOR_TANK_ROTATION,
   end
 })
 
-table.insert(WARRIOR_TANK_ROTATION,
+table.insert(WARRIOR_DPS_ROTATION,
 {
-  name      = "Heroic Strike",
+  name      = "Heroic Strike / Cleave",
   execution = function()
-    castHeroicStrike()
+    if WE_WANT_CLEAVE == 1 then
+      castCleave()
+    else
+      castHeroicStrike()
+    end
   end,
   condition = function()
     -- Heroic Strike is good to dump excess rage, and will improve your DPS.
     -- It is a last resort technique when all your Insta skills are on CD.
-    if    UnitMana("player") <= 45
-       or WE_WANT_CLEAVE     == 1  then
+    if UnitMana("player") <= 45
       return false
     end
-  end
-})
-
-table.insert(WARRIOR_TANK_ROTATION,
-{
-  name      = "Cleave",
-  execution = function()
-    castCleave()
-  end,
-  condition = function()
-    -- Cleave is better than Heroic Strike when you can hit 2 enemies.
-    if    UnitMana("player") <= 45
-       or WE_WANT_CLEAVE     == 0 then
-      return false
-    end
+    return true
   end
 })
 
