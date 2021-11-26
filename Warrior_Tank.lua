@@ -67,7 +67,7 @@ table.insert(WARRIOR_TANK_ROTATION,
   end
 })
 
-table.insert(WARRIOR_DPS_ROTATION,
+table.insert(WARRIOR_TANK_ROTATION,
 {
   name      = "Heroic Strike / Cleave",
   execution = function()
@@ -78,9 +78,12 @@ table.insert(WARRIOR_DPS_ROTATION,
     end
   end,
   condition = function()
+    local SpellButton    = Zorlen_Button[LOCALIZATION_ZORLEN.Bloodthirst]
+    local _, duration, _ = GetActionCooldown(SpellButton)
     -- Heroic Strike is good to dump excess rage, and will improve your DPS.
     -- It is a last resort technique when all your Insta skills are on CD.
-    if UnitMana("player") <= 45
+    if     UnitMana("player") <= 45
+       and duration < 2
       return false
     end
     return true
