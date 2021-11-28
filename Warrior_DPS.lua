@@ -111,7 +111,7 @@ table.insert(WARRIOR_DPS_ROTATION,
         return true
       end
     end
-    return true
+    return false
   end
 })
 
