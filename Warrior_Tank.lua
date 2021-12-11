@@ -7,6 +7,9 @@ table.insert(WARRIOR_TANK_ROTATION,
     castTaunt()
   end,
   condition = function()
+    if UnitIsPlayer("target") then
+      return false
+    end
     if        WE_WANT_TAUNT == 0
        or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Taunt) then
       return false
@@ -42,6 +45,9 @@ table.insert(WARRIOR_TANK_ROTATION,
   end,
   -- Revenge : 71 TPR, we want to use it every time its possible as its only 5 Rage point.
   condition = function()
+    if UnitIsPlayer("target") then
+      return false
+    end
     if        UnitMana("player") < 5
        or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Revenge) then
       return false
@@ -84,6 +90,7 @@ table.insert(WARRIOR_TANK_ROTATION,
     -- It is a last resort technique when all your Insta skills are on CD.
     if     UnitMana("player") <= 45
        and duration < 2
+    then
       return false
     end
     return true
