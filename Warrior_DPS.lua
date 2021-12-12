@@ -101,6 +101,11 @@ table.insert(WARRIOR_DPS_ROTATION,
     if isDefensiveStance() then
       return false
     end
+    
+    if         UnitIsPlayer("target")
+       and not isHamstring() then
+      return true
+    end
 
     if UnitMana("player") < 40 then
       if Zorlen_checkItemBuffByName(LOCALIZATION_ZORLEN.WindfuryWeapon) then
@@ -128,7 +133,7 @@ table.insert(WARRIOR_DPS_ROTATION,
   condition = function()
     -- Heroic Strike is good to dump excess rage, and will improve your DPS.
     -- It is a last resort technique when all your Insta skills are on CD.
-    if UnitMana("player") <= 45
+    if UnitMana("player") <= 45 then
       return false
     end
     return true
@@ -137,10 +142,10 @@ table.insert(WARRIOR_DPS_ROTATION,
 
 function kuri_warrior_dps()
 	-- We do not touch CC targets
-	if Zorlen_isNoDamageCC("target") then
-		backOff()
-		return true
-	end
+--	if Zorlen_isNoDamageCC("target") then
+--		backOff()
+--		return true
+--	end
 
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
@@ -148,13 +153,13 @@ function kuri_warrior_dps()
 	end
 
   -- If we take aggro on a raid, we switch to defensive stance to survive
-  if         UnitInRaid("player")
-	   and     Zorlen_isEnemyTargetingYou()
-     and not isDefensiveStance() then
-    castDefensiveStance()
-  else
+--  if         UnitInRaid("player")
+--	   and     Zorlen_isEnemyTargetingYou()
+--     and not isDefensiveStance() then
+--    castDefensiveStance()
+--  else
     castBerserkerStance()
-	end
+--	end
 
   for key, value in next,WARRIOR_DPS_ROTATION,nil do
     if value.condition() == true then
