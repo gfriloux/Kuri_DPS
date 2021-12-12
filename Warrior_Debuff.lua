@@ -12,6 +12,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
   -- It also helps the tank to spend his rage on more efficient threat/mitigation skills.
   condition = function()
     if        UnitMana("player") < 15
+       or     UnitIsPlayer("target")
        or     isSunderFull("target")
        or not UnitInRaid("player")
     then
@@ -78,7 +79,6 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
   end
 })
 
---[[
 table.insert(WARRIOR_DEBUFF_ROTATION,
 {
   name      = "Disarm",
@@ -95,7 +95,6 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     return true
   end
 })
---]]
 
 function kuri_warrior_debuff()
   for key, value in next,WARRIOR_DEBUFF_ROTATION,nil do
