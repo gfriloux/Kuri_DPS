@@ -15,6 +15,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
        or     UnitIsPlayer("target")
        or     isSunderFull("target")
        or not UnitInRaid("player")
+       or not isDefensiveStance()
     then
       return false
     end
@@ -53,6 +54,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     if    not UnitInRaid("player")
        or     isDemoralized("target")
        or     now - DemoTime < 20
+       or not isDefensiveStance()
     then
       return false
     end
