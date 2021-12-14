@@ -48,6 +48,7 @@ table.insert(WARRIOR_BUFF_ROTATION,
   end
 })
 
+-- Need to find a way to get the cooldown timer of item
 table.insert(WARRIOR_BUFF_ROTATION,
 {
   name      = "Earthstrike",
@@ -58,7 +59,6 @@ table.insert(WARRIOR_BUFF_ROTATION,
   condition = function()
     if   not Zorlen_isItemByNameEquipped("Earthstrike")
       or     Zorlen_notInCombat()
-      or not Zorlen_checkCooldownByName("Earthstrike")
     then
       return false
     end
@@ -80,7 +80,7 @@ table.insert(WARRIOR_BUFF_ROTATION,
        or     percent                  < 80
        or     WE_WANT_AGGRO           ==  1
        or not Zorlen_isCurrentRaceOrc ==  1
-       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.Bloodrage)
+       or not Zorlen_checkCooldownByName(LOCALIZATION_ZORLEN.BloodFury)
     then
       return false
     end
