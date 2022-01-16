@@ -15,7 +15,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
        or     UnitIsPlayer("target")
        or     isSunderFull("target")
        or not UnitInRaid("player")
-       or not isDefensiveStance()
+--       or not isDefensiveStance()
     then
       return false
     end
@@ -54,7 +54,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     if    not UnitInRaid("player")
        or     isDemoralized("target")
        or     now - DemoTime < 20
-       or not isDefensiveStance()
+--       or not isDefensiveStance()
     then
       return false
     end
@@ -80,7 +80,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     return false
   end
 })
-
+--[[
 table.insert(WARRIOR_DEBUFF_ROTATION,
 {
   name      = "Disarm",
@@ -97,7 +97,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     return true
   end
 })
-
+--]]
 function kuri_warrior_debuff()
   for key, value in next,WARRIOR_DEBUFF_ROTATION,nil do
     if value.condition() == true then
