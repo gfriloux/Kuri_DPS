@@ -2,18 +2,23 @@ local WARRIOR_DPS_ROTATION = {}
 
 table.insert(WARRIOR_DPS_ROTATION,
 {
-  name      = "Execute",
-  execution = function()
-    castExecute()
-  end,
-  condition = function()
-    -- Use execute if target's HP below 20%
-    if    not Zorlen_TargetIsDieingEnemy()
-       or     isDefensiveStance() then
-      return false
-    end
-    return true
-  end
+   name      = "Execute",
+   execution = function()
+     castExecute()
+   end,
+   condition = function()
+     -- Use execute if target's HP below 20%
+     if    not Zorlen_TargetIsDieingEnemy()
+        or     isDefensiveStance() then
+       return false
+     end
+     
+     -- Do not waste huge amounts of rage on execute
+     if        UnitMana("player") > 20 then
+       return false
+     end
+     return true
+   end
 })
 
 table.insert(WARRIOR_DPS_ROTATION,
@@ -69,15 +74,41 @@ table.insert(WARRIOR_DPS_ROTATION,
     castSlam()
   end,
   condition = function()
+    local speedMH, _ = UnitAttackSpeed("player")
+    local percent = (st_timer / speedMH) * 100
+    
+    if UnitMana("player") < 15 then
+      return false
+    end
+
+    local SpellButton    = Zorlen_Button[LOCALIZATION_ZORLEN.Bloodthirst]
+    local _, duration, _ = GetActionCooldown(SpellButton)
+    if duration == 0 then
+      return false
+    end
+
+    local SpellButton2    = Zorlen_Button[LOCALIZATION_ZORLEN.Whirlwind]
+    local _, duration2, _ = GetActionCooldown(SpellButton2)
+    if duration2 == 0 then
+      return false
+    end
+
     -- It is only good to use slam with 2 handed weapons.
     if not isTwoHanded() then
       return false
     end
-      
-    -- If next swing is in more than 1.5s, using Slam IS a DPS boost.
-    if st_timer < 1.5 then
+
+    if    st_timer == 0
+       or speedMH  == 0 then
       return false
     end
+
+    -- If next swing is in more than 1.5s, using Slam IS a DPS boost.
+    if percent < 70 then
+      return false
+    end
+    
+    return true
   end
 })
 
@@ -100,6 +131,12 @@ table.insert(WARRIOR_DPS_ROTATION,
     --   - Our other instant skills are on cooldown.
     if isDefensiveStance() then
       return false
+    end
+    
+    -- We want to slow enemy players (PVP)
+    if         UnitIsPlayer("target")
+       and not isHamstring() then
+      return true
     end
 
     if UnitMana("player") < 40 then
@@ -128,19 +165,41 @@ table.insert(WARRIOR_DPS_ROTATION,
   condition = function()
     -- Heroic Strike is good to dump excess rage, and will improve your DPS.
     -- It is a last resort technique when all your Insta skills are on CD.
-    if UnitMana("player") <= 45
+    if UnitMana("player") <= 45 then
       return false
     end
     return true
   end
 })
 
+table.insert(WARRIOR_DPS_ROTATION,
+{
+  name      = "Overpower",
+  execution = function()
+    castOverpower()
+  end,
+  condition = function()
+    -- If Overpower did not trigger, we won't try to cast it.
+    if not Zorlen_isActionInRangeBySpellName(LOCALIZATION_ZORLEN.Overpower) then
+      return false
+    end
+    
+    -- We need To retain at least 5 Rage points to cast Overpower.
+    if Zorlen_TacticalMasteryRagePoints() < 5 then
+      return false
+    end
+
+    castBattleStance()
+    return true
+  end
+})
+
 function kuri_warrior_dps()
 	-- We do not touch CC targets
-	if Zorlen_isNoDamageCC("target") then
-		backOff()
-		return true
-	end
+--	if Zorlen_isNoDamageCC("target") then
+--		backOff()
+--		return true
+--	end
 
 	-- If enemy is at correct distance, lets charge it
 	if Zorlen_GiveMaxTargetRange(8, 25) then
@@ -148,13 +207,17 @@ function kuri_warrior_dps()
 	end
 
   -- If we take aggro on a raid, we switch to defensive stance to survive
-  if         UnitInRaid("player")
-	   and     Zorlen_isEnemyTargetingYou()
-     and not isDefensiveStance() then
-    castDefensiveStance()
-  else
-    castBerserkerStance()
-	end
+--  if         UnitInRaid("player")
+--	   and     Zorlen_isEnemyTargetingYou()
+--     and not isDefensiveStance() then
+--    castDefensiveStance()
+--  else
+
+    -- We won't force cast zerk stance if we are going to use overpower.
+    if not Zorlen_isActionInRangeBySpellName(LOCALIZATION_ZORLEN.Overpower) then
+      castBerserkerStance()
+    end
+--	end
 
   for key, value in next,WARRIOR_DPS_ROTATION,nil do
     if value.condition() == true then

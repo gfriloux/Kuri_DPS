@@ -1,6 +1,6 @@
 local WARRIOR_DEBUFF_ROTATION = {}
 local DemoTime = 0
-
+--[[
 table.insert(WARRIOR_DEBUFF_ROTATION,
 {
   name      = "Sunder Armor",
@@ -12,14 +12,17 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
   -- It also helps the tank to spend his rage on more efficient threat/mitigation skills.
   condition = function()
     if        UnitMana("player") < 15
+       or     UnitIsPlayer("target")
        or     isSunderFull("target")
        or not UnitInRaid("player")
+--       or not isDefensiveStance()
     then
       return false
     end
     return true
   end
 })
+--]]
 
 table.insert(WARRIOR_DEBUFF_ROTATION,
 {
@@ -52,6 +55,7 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     if    not UnitInRaid("player")
        or     isDemoralized("target")
        or     now - DemoTime < 20
+--       or not isDefensiveStance()
     then
       return false
     end
@@ -77,7 +81,6 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
     return false
   end
 })
-
 --[[
 table.insert(WARRIOR_DEBUFF_ROTATION,
 {
@@ -96,7 +99,6 @@ table.insert(WARRIOR_DEBUFF_ROTATION,
   end
 })
 --]]
-
 function kuri_warrior_debuff()
   for key, value in next,WARRIOR_DEBUFF_ROTATION,nil do
     if value.condition() == true then

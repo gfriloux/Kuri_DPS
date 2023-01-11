@@ -1,8 +1,9 @@
 ## Interface: 80200
 ## Title: Kuri DPS
 ## Author: Kuri
-## Version: 2.0
+## Version: 2.1
 ## Dependencies: Zorlen
+Priest_Smite.lua
 Warrior_Buff.lua
 Warrior_Debuff.lua
 Warrior_DPS.lua
