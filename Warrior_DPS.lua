@@ -189,6 +189,11 @@ table.insert(WARRIOR_DPS_ROTATION,
       return false
     end
 
+    -- We don't want to waste rage by changing stance.
+    if UnitMana("player") > Zorlen_TacticalMasteryRagePoints() then
+      return false
+    end
+
     castBattleStance()
     return true
   end
