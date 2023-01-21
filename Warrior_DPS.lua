@@ -1,5 +1,32 @@
 local WARRIOR_DPS_ROTATION = {}
 
+function kuri_warrior_OnEvent_CHAT_MSG_COMBAT_SELF_MISSES(arg1, arg2, arg3)
+  -- Zorlen_debug("Compare "..LOCALIZATION_ZORLEN.dodged.." with "..arg1, 1)
+  if not string.find(arg1, UnitName("player").." attacks.") then
+    return
+  end
+
+	if string.find(arg1, "dodges") then
+		Zorlen_SetTimer(5, "Overpower", nil, "Kuri_DPS", 2, 1)
+	end
+end
+
+function kuri_warrior_OnEvent_CHAT_MSG_SPELL_SELF_DAMAGE(arg1, arg2, arg3)
+  if not string.find(arg1, UnitName("player")) then
+    return
+  end
+
+	if string.find(arg1, "was dodged") then
+		Zorlen_SetTimer(5, "Overpower", nil, "Kuri_DPS", 2, 1)
+	end
+end
+
+function kuri_warrior_OnEvent_SPELLCAST_STOP(arg1, arg2, arg3)
+	if Zorlen_CastingSpellName == LOCALIZATION_ZORLEN.Overpower then
+		Zorlen_ClearTimer("Overpower", nil, "Kuri_DPS")
+	end
+end
+
 table.insert(WARRIOR_DPS_ROTATION,
 {
    name      = "Execute",
@@ -179,8 +206,9 @@ table.insert(WARRIOR_DPS_ROTATION,
     castOverpower()
   end,
   condition = function()
+    -- Zorlen_debug("Overpower timer : "..Zorlen_GetTimer("Overpower", nil, "Kuri_DPS"), 1)
     -- If Overpower did not trigger, we won't try to cast it.
-    if not Zorlen_isActionInRangeBySpellName(LOCALIZATION_ZORLEN.Overpower) then
+    if Zorlen_GetTimer("Overpower", nil, "Kuri_DPS") < 1 then
       return false
     end
     
@@ -219,7 +247,7 @@ function kuri_warrior_dps()
 --  else
 
     -- We won't force cast zerk stance if we are going to use overpower.
-    if not Zorlen_isActionInRangeBySpellName(LOCALIZATION_ZORLEN.Overpower) then
+    if Zorlen_GetTimer("Overpower", nil, "Kuri_DPS") < 1 then
       castBerserkerStance()
     end
 --	end

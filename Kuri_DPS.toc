@@ -3,10 +3,4 @@
 ## Author: Kuri
 ## Version: 2.1
 ## Dependencies: Zorlen
-Priest_Smite.lua
-Warrior_Buff.lua
-Warrior_Debuff.lua
-Warrior_DPS.lua
-Warrior_Tank.lua
-Warriors.lua
-Kuri_DPS.lua
+Kuri_DPS.xml
