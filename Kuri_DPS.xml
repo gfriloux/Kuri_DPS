@@ -1,0 +1,25 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
+
+<!-- Localization files must always be listed first in the XML file. -->
+	<Script file="Kuri_DPS.lua"/>
+	<Script file="Priest_Smite.lua"/>
+	<Script file="Warrior_Buff.lua"/>
+	<Script file="Warrior_Debuff.lua"/>
+	<Script file="Warrior_DPS.lua"/>
+	<Script file="Warrior_Arms.lua"/>
+	<Script file="Warriors.lua"/>
+	<Script file="Warrior_Tank.lua"/>
+  
+	<Frame name="KuriFrame" hidden="true">
+		<Scripts>
+			<OnLoad>
+				kuri_OnLoad();
+			</OnLoad>
+			<OnEvent>
+				kuri_OnEvent(event, arg1, arg2, arg3);
+			</OnEvent>
+		</Scripts>
+	</Frame>
+</Ui>
